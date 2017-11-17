@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="whiteF5">#F5F5F5</color>
+    <color name="whiteFA">#FAFAFA</color>
+    <color name="line">#D7D7D7</color>
+    <color name="text33">#ff333333</color>
+    <color name="text45">#ff454545</color>
+    <color name="text63">#ff636363</color>
+    <color name="text66">#6d6d6d</color>
+    <color name="text95">#959595</color>
+    <color name="text99">#ff999999</color>
+    <color name="textC7">#C7C7C7</color>
+</resources>

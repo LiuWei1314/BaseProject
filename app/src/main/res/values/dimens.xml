@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--键盘-->
+    <dimen name="key_height">60dp</dimen>
+    <dimen name="keyboard_horizontalGap">1px</dimen>
+    <dimen name="keyboard_verticalGap">1px</dimen>
+    <dimen name="key_height_double">120dp</dimen>
+</resources>

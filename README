@@ -1,0 +1,127 @@
+1.Rxjava2
+2.Retrofit2
+3.RxLifecycle2用于控制RxJava内存泄漏问题
+4.MVP模式
+5.Utils 已包含众多工具类，详情请github搜索:  com.blankj:utilcode
+6.Dagger2
+7.Leakcanary用于监听内存泄漏
+8.AutoLayout用于屏幕适配
+9.fastjson数据解析
+10.RecycleView Adapter 请github搜索:  com.github.CymChad:BaseRecyclerViewAdapterHelper
+11.模版请见下
+
+Activity
+===========================================================
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import com.kemai.basemodule.base.BaseActivity;
+import com.kemai.basemodule.di.component.BaseComponent;
+import com.kemai.basemodule.utils.UiUtils;
+import com.kemai.kmcyselftablet.R;
+import com.kemai.kmcyselftablet.mvp.di.component.Dagger${NAME}Component;
+import com.kemai.kmcyselftablet.mvp.di.module.${NAME}Module;
+import com.kemai.kmcyselftablet.mvp.contract.${NAME}Contract;
+import com.kemai.kmcyselftablet.mvp.presenter.${NAME}Presenter;
+
+#parse("File Header.java")
+public class ${NAME}Activity extends BaseActivity<${NAME}Presenter> implements ${NAME}Contract.View {
+
+    @Override
+    protected void setupActivityComponent(BaseComponent baseComponent) {
+        Dagger${NAME}Component
+                .builder()
+                .baseComponent(baseComponent)
+                .${NAME}Module(new ${NAME}Module(this)) //请将${NAME}Module()第一个首字母改为小写
+                .build()
+                .inject(this);
+    }
+
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.id;
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    public void launchActivity(@NonNull Intent intent) {
+        UiUtils.startActivity(this, intent);
+    }
+
+    @Override
+    public void killMyself() {
+        finish();
+    }
+}
+===========================================================
+
+===========================================================
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+
+import android.content.Context;
+import android.support.annotation.Nullable;
+import android.util.AttributeSet;
+import android.view.ViewGroup;
+
+import com.zhy.autolayout.AutoLayoutInfo;
+import com.zhy.autolayout.utils.AutoLayoutHelper;
+
+/**
+ * 此Template用于生成AutoLayout需要的的Auto系列View,如需要使ScrollView适配,使用此Template输入ScrollView,即可生成
+ * AutoScrollView,使用此View即可自适应
+ */
+public class Auto${NAME} extends ${NAME} {
+    private AutoLayoutHelper mHelper = new AutoLayoutHelper(this);
+
+    public Auto${NAME}(Context context) {
+        super(context);
+    }
+
+    public Auto${NAME}(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public Auto${NAME}(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
+        if (!isInEditMode()) {
+            mHelper.adjustChildren();
+        }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b){super.onLayout(changed, l, t, r, b);}
+
+    @Override
+    public LayoutParams generateLayoutParams(AttributeSet attrs) {
+        return new LayoutParams(getContext(), attrs);
+    }
+
+    public static class LayoutParams extends ${NAME}.LayoutParams implements AutoLayoutHelper.AutoLayoutParams{
+        private AutoLayoutInfo mAutoLayoutInfo;
+
+        public LayoutParams(Context c, AttributeSet attrs){
+            super(c, attrs);
+            mAutoLayoutInfo = AutoLayoutHelper.getAutoLayoutInfo(c, attrs);
+        }
+
+        @Override
+        public AutoLayoutInfo getAutoLayoutInfo(){return mAutoLayoutInfo;}
+
+        public LayoutParams(int width, int height){super(width, height);}
+
+        public LayoutParams(ViewGroup.LayoutParams source){super(source);}
+
+        public LayoutParams(MarginLayoutParams source){super(source);}
+    }
+}
+===========================================================
